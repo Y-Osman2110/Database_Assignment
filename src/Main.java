@@ -1,6 +1,3 @@
-package src;
-
-
 import java.util.Scanner;
 
 public class Main {
@@ -76,7 +73,7 @@ public class Main {
                 db.findATrainerBySpecialty(s);
             }
             else if(choice.equals("5")) {
-                db.getMembersWithExpiredSubscriptions();;
+                db.getMembersWithExpiredSubscriptions();
             }
             else if(choice.equals("6")) {
                 db.getTrainerSchedule();
