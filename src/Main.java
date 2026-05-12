@@ -13,6 +13,10 @@ public class Main {
             System.out.println("0. Exit");
             System.out.println("1. Insert new member");
             System.out.println("2. Set member's health profile");
+            System.out.println("3. Find member by phone number");
+            System.out.println("4. Find trainers by specialty");
+            System.out.println("5. Find members with expired subscriptions");
+            System.out.println("6. Get all trainers' schedules");
             choice = input.nextLine();
             if (choice.equals("0")) {
                 System.out.println("Exiting the system...");
@@ -55,6 +59,24 @@ public class Main {
                 int m = input.nextInt();
                 
                 Insert.setMemberHealthProfile(a, h, w, d, m);
+            }
+            else if(choice.equals("3")) {
+                System.out.println("Enter phone number: ");
+                String p = input.nextLine();
+
+                Select.findMemeberByPhone(p);
+            }
+            else if(choice.equals("4")) {
+                System.out.println("Enter specialty: ");
+                String s = input.nextLine();
+
+                Select.findMemeberByPhone(s);
+            }
+            else if(choice.equals("5")) {
+                Select.findMembersWithExpiredSubscriptions();
+            }
+            else if(choice.equals("6")) {
+                Select.getTrainerSchedule();
             }
         }
     }
