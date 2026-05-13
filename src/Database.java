@@ -41,7 +41,7 @@ public class Database {
     public void setHealthProfile(int age, int height, int weight, String description, int memberId) {
         insert.setMemberHealthProfile(connection, age, height, weight, description, memberId);
     }
-    // select
+    // select & join
     public void findMemberByPhone(String phone) {
         select.findMemberByPhone(connection, phone);
     }
@@ -53,6 +53,26 @@ public class Database {
     }
     public void getTrainerSchedule() {
         select.getTrainerSchedule(connection);
+    }
+    // 6 inqueries
+    public void getDisciplineMaxReservation(){
+        select.query1(connection);
+    }
+    
+    public void sessionsWithNoReservations(){
+        select.query2(connection);
+    }
+    public void trainerWithTheHighestMembers(){
+        select.query3(connection);
+    }
+    public void activeMembersWithNoCheckin(){
+        select.query4(connection);
+    }
+    public void sessionsPerZone(){
+        select.query5(connection);
+    }
+    public void membersTotalReservations(){
+        select.query6(connection);
     }
     // update 
     public void updateMemberEmail(int memberId, String newEmail) {

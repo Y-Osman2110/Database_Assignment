@@ -2,7 +2,9 @@ package src;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 public class Select {
@@ -70,7 +72,7 @@ public class Select {
         String sql = "SELECT m.Fname, m.Lname, m.memberPhone, m.memberEmail, m.memberAddress  FROM Member m Inner Join Subscription s ON "
                 + "m.memberId = s.memberId WHERE s.EndDate < GETDATE();";
 
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
             ResultSet rs = statement.executeQuery();
             boolean found = false;
@@ -137,4 +139,70 @@ public class Select {
             System.out.println(e.getMessage());
         }
     }
+
+    // the 6 inqueries
+    private void executeAndPrint(Connection conn, String sql) {
+        if (conn == null)
+            return;
+        try (Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
+
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnsNumber = rsmd.getColumnCount();
+
+            while (rs.next()) {
+                for (int i = 1; i <= columnsNumber; i++) {
+                    System.out.print(rs.getString(i) + (i < columnsNumber ? " | " : ""));
+                }
+                System.out.println();
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Error: " + e.getMessage());
+        }
+    }
+
+    public void query1(Connection connection) {
+        String sql = "SELECT TOP 1 s.discipline, COUNT(r.reservationId) AS Total " +
+                "FROM Session s JOIN Reservation r ON s.reservationId = r.reservationId " +
+                "GROUP BY s.discipline ORDER BY Total DESC;";
+        executeAndPrint(connection, sql);
+    }
+
+    public void query2(Connection connection) {
+        String sql = "SELECT s.sessionId, s.discipline, s.startTime FROM Session s " +
+                "WHERE s.startTime >= DATEADD(MONTH, -1, GETDATE()) " +
+                "AND s.sessionId NOT IN (SELECT DISTINCT sessionId FROM Session WHERE reservationId IS NOT NULL);";
+        executeAndPrint(connection, sql);
+    }
+
+    public void query3(Connection connection) {
+        String sql = "SELECT TOP 1 t.trainerFname, t.trainerLname, COUNT(c.checkinId) AS Total " +
+                "FROM Trainer t JOIN [Check-in] c ON t.memberId = c.memberId " +
+                "WHERE c.timestamp >= DATEADD(MONTH, -1, GETDATE()) " +
+                "GROUP BY t.trainerFname, t.trainerLname ORDER BY Total DESC;";
+        executeAndPrint(connection, sql);
+    }
+
+    public void query4(Connection connection) {
+        String sql = "SELECT m.Fname, m.Lname, m.memberEmail FROM Member m " +
+                "JOIN Subscription s ON m.memberId = s.memberId " +
+                "WHERE s.status = 'Active' AND m.memberId NOT IN " +
+                "(SELECT memberId FROM [Check-in] WHERE timestamp >= DATEADD(MONTH, -1, GETDATE()));";
+        executeAndPrint(connection, sql);
+    }
+
+    public void query5(Connection connection) {
+        String sql = "SELECT z.zoneNum, s.discipline, s.startTime FROM Zone z " +
+                "JOIN Session s ON z.sessionId = s.sessionId " +
+                "WHERE z.timestamp >= DATEADD(MONTH, -1, GETDATE()) ORDER BY z.zoneNum;";
+        executeAndPrint(connection, sql);
+    }
+
+    public void query6(Connection connection) {
+        String sql = "SELECT m.Fname + ' ' + m.Lname AS FullName, COUNT(r.reservationId) AS Total " +
+                "FROM Member m LEFT JOIN Reservation r ON m.memberId = r.memberId " +
+                "GROUP BY m.memberId, m.Fname, m.Lname ORDER BY Total DESC;";
+        executeAndPrint(connection, sql);
+    }
+
 }
