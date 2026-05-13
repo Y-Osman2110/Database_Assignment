@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.effect.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.example.gym.controllers.MainController"
+           prefWidth="1200" prefHeight="800"
+           styleClass="root">
+
+    <HBox spacing="0">
+        <!-- Sidebar -->
+        <VBox styleClass="sidebar" prefWidth="260" spacing="0">
+            <padding><Insets top="30" right="0" bottom="30" left="0"/></padding>
+
+            <VBox alignment="CENTER" spacing="5">
+                <padding><Insets bottom="30"/></padding>
+                <Circle radius="35" fill="#ffd700">
+                    <effect><DropShadow color="#ffd700" radius="15" spread="0.3"/></effect>
+                </Circle>
+                <Label text="💪" style="-fx-font-size: 36px;"/>
+                <Label text="GYM PRO" styleClass="sidebar-title"/>
+                <Label text="MANAGEMENT SYSTEM" styleClass="sidebar-subtitle"/>
+            </VBox>
+
+            <Separator styleClass="modern-separator" opacity="0.3"/>
+
+            <VBox spacing="5" VBox.vgrow="ALWAYS">
+                <padding><Insets top="20" right="15" bottom="20" left="15"/></padding>
+
+                <Button fx:id="btnDashboard" text="  📊 Dashboard" styleClass="nav-button, active"
+                        onAction="#showDashboard" maxWidth="Infinity" alignment="CENTER_LEFT"/>
+                <Button fx:id="btnInsert" text="  ➕ Insert Data" styleClass="nav-button"
+                        onAction="#showInsert" maxWidth="Infinity" alignment="CENTER_LEFT"/>
+                <Button fx:id="btnSelect" text="  🔍 Search &amp; Query" styleClass="nav-button"
+                        onAction="#showSelect" maxWidth="Infinity" alignment="CENTER_LEFT"/>
+                <Button fx:id="btnAnalytics" text="  📈 Analytics" styleClass="nav-button"
+                        onAction="#showAnalytics" maxWidth="Infinity" alignment="CENTER_LEFT"/>
+                <Button fx:id="btnUpdateDelete" text="  ✏️ Update / Delete" styleClass="nav-button"
+                        onAction="#showUpdateDelete" maxWidth="Infinity" alignment="CENTER_LEFT"/>
+            </VBox>
+
+            <VBox alignment="CENTER" spacing="10">
+                <padding><Insets top="20" right="15" bottom="10" left="15"/></padding>
+                <Separator styleClass="modern-separator" opacity="0.3"/>
+                <Label text="🟢 Database Connected" style="-fx-text-fill: #00d26a; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+                <Label text="SQL Server • GYM DB" style="-fx-text-fill: rgba(255,255,255,0.6); -fx-font-size: 10px;"/>
+            </VBox>
+        </VBox>
+
+        <!-- Main Content Area -->
+        <VBox styleClass="content-area" HBox.hgrow="ALWAYS">
+            <HBox styleClass="title-bar" alignment="CENTER_RIGHT" spacing="10">
+                <padding><Insets top="10" right="20" bottom="10" left="20"/></padding>
+                <Label fx:id="pageTitle" text="Dashboard" styleClass="window-title" HBox.hgrow="ALWAYS"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="−" styleClass="minimize-button" onAction="#minimizeWindow"/>
+                <Button text="×" styleClass="close-button" onAction="#closeWindow"/>
+            </HBox>
+
+            <StackPane fx:id="contentContainer" VBox.vgrow="ALWAYS">
+                <padding><Insets top="10" right="25" bottom="25" left="25"/></padding>
+                <fx:include source="DashboardView.fxml" fx:id="dashboardView"/>
+            </StackPane>
+        </VBox>
+    </HBox>
+</StackPane>

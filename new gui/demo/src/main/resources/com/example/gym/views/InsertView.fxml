@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.gym.controllers.InsertController"
+            styleClass="modern-scroll" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+
+    <VBox spacing="25">
+        <padding><Insets top="10" right="10" bottom="30" left="10"/></padding>
+
+        <VBox spacing="5">
+            <Label text="➕ Insert Operations" styleClass="page-header-white"/>
+            <Label text="Add new members and health profiles to the database" 
+                   style="-fx-text-fill: rgba(255,255,255,0.7); -fx-font-size: 14px;"/>
+        </VBox>
+
+        <HBox spacing="20">
+            <VBox styleClass="content-card" spacing="20" HBox.hgrow="ALWAYS" prefWidth="450">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Circle radius="25" fill="#e94560"/>
+                    <Label text="👤" style="-fx-font-size: 28px;"/>
+                    <VBox>
+                        <Label text="Enroll New Member" styleClass="page-header"/>
+                        <Label text="Register a new gym member" styleClass="info-label"/>
+                    </VBox>
+                </HBox>
+
+                <Separator styleClass="modern-separator"/>
+
+                <GridPane vgap="12" hgap="10">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="100" prefWidth="120"/>
+                        <ColumnConstraints hgrow="ALWAYS"/>
+                    </columnConstraints>
+
+                    <Label text="First Name:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <TextField fx:id="firstNameField" promptText="e.g. John" styleClass="modern-field" 
+                               GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                    <Label text="Last Name:" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                    <TextField fx:id="lastNameField" promptText="e.g. Doe" styleClass="modern-field" 
+                               GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                    <Label text="Phone:" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                    <TextField fx:id="phoneField" promptText="e.g. +1 555-0123" styleClass="modern-field" 
+                               GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                    <Label text="Email:" styleClass="form-label" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                    <TextField fx:id="emailField" promptText="e.g. john@email.com" styleClass="modern-field" 
+                               GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                    <Label text="Address:" styleClass="form-label" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                    <TextArea fx:id="addressField" promptText="e.g. 123 Fitness St, Gym City" 
+                              styleClass="modern-textarea" prefRowCount="2"
+                              GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                </GridPane>
+
+                <Region VBox.vgrow="ALWAYS"/>
+
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Button text="🗑️ Clear" styleClass="secondary-button" onAction="#clearMemberForm"/>
+                    <Button text="💾 Enroll Member" styleClass="action-button" onAction="#enrollMember"/>
+                </HBox>
+            </VBox>
+
+            <VBox styleClass="content-card" spacing="20" HBox.hgrow="ALWAYS" prefWidth="450">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Circle radius="25" fill="#00d26a"/>
+                    <Label text="❤️" style="-fx-font-size: 28px;"/>
+                    <VBox>
+                        <Label text="Add Health Profile" styleClass="page-header"/>
+                        <Label text="Set member health metrics" styleClass="info-label"/>
+                    </VBox>
+                </HBox>
+
+                <Separator styleClass="modern-separator"/>
+
+                <GridPane vgap="12" hgap="10">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="100" prefWidth="120"/>
+                        <ColumnConstraints hgrow="ALWAYS"/>
+                    </columnConstraints>
+
+                    <Label text="Member ID:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <TextField fx:id="healthMemberIdField" promptText="e.g. 101" styleClass="modern-field" 
+                               GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                    <Label text="Age:" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                    <TextField fx:id="ageField" promptText="e.g. 25" styleClass="modern-field" 
+                               GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                    <Label text="Height (cm):" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                    <TextField fx:id="heightField" promptText="e.g. 175" styleClass="modern-field" 
+                               GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                    <Label text="Weight (kg):" styleClass="form-label" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                    <TextField fx:id="weightField" promptText="e.g. 70" styleClass="modern-field" 
+                               GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                    <Label text="Description:" styleClass="form-label" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                    <TextArea fx:id="healthDescField" promptText="e.g. Fitness goals, medical notes..." 
+                              styleClass="modern-textarea" prefRowCount="3"
+                              GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                </GridPane>
+
+                <Region VBox.vgrow="ALWAYS"/>
+
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Button text="🗑️ Clear" styleClass="secondary-button" onAction="#clearHealthForm"/>
+                    <Button text="💾 Save Profile" styleClass="success-button" onAction="#saveHealthProfile"/>
+                </HBox>
+            </VBox>
+        </HBox>
+
+        <VBox fx:id="notificationBox" spacing="10" visible="false" managed="false">
+            <Label fx:id="notificationLabel" styleClass="notification-text"/>
+        </VBox>
+    </VBox>
+</ScrollPane>

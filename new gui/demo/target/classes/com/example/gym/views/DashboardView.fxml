@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.gym.controllers.DashboardController"
+            styleClass="modern-scroll" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+
+    <VBox spacing="25">
+        <padding><Insets top="10" right="10" bottom="30" left="10"/></padding>
+
+        <VBox spacing="5">
+            <Label text="Welcome Back! 💪" styleClass="page-header-white"/>
+            <Label text="Here's what's happening at your gym today" 
+                   style="-fx-text-fill: rgba(255,255,255,0.7); -fx-font-size: 14px;"/>
+        </VBox>
+
+        <HBox spacing="20">
+            <VBox styleClass="stat-card" prefWidth="200" spacing="10">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Circle radius="20" fill="#e94560" opacity="0.2"/>
+                    <Label text="👥" style="-fx-font-size: 24px;"/>
+                </HBox>
+                <Label fx:id="totalMembersLabel" text="0" styleClass="stat-number"/>
+                <Label text="TOTAL MEMBERS" styleClass="stat-label"/>
+            </VBox>
+
+            <VBox styleClass="stat-card" prefWidth="200" spacing="10">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Circle radius="20" fill="#00d26a" opacity="0.2"/>
+                    <Label text="✅" style="-fx-font-size: 24px;"/>
+                </HBox>
+                <Label fx:id="activeSubsLabel" text="0" styleClass="stat-number"/>
+                <Label text="ACTIVE SUBSCRIPTIONS" styleClass="stat-label"/>
+            </VBox>
+
+            <VBox styleClass="stat-card" prefWidth="200" spacing="10">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Circle radius="20" fill="#ffd700" opacity="0.2"/>
+                    <Label text="🏋️" style="-fx-font-size: 24px;"/>
+                </HBox>
+                <Label fx:id="totalTrainersLabel" text="0" styleClass="stat-number"/>
+                <Label text="TRAINERS" styleClass="stat-label"/>
+            </VBox>
+
+            <VBox styleClass="stat-card" prefWidth="200" spacing="10">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Circle radius="20" fill="#ff6b6b" opacity="0.2"/>
+                    <Label text="📅" style="-fx-font-size: 24px;"/>
+                </HBox>
+                <Label fx:id="todaySessionsLabel" text="0" styleClass="stat-number"/>
+                <Label text="TODAY'S SESSIONS" styleClass="stat-label"/>
+            </VBox>
+        </HBox>
+
+        <HBox spacing="20" VBox.vgrow="ALWAYS">
+            <VBox styleClass="content-card" spacing="15" HBox.hgrow="ALWAYS" prefWidth="350">
+                <Label text="⚡ Quick Actions" styleClass="page-header"/>
+                <Separator styleClass="modern-separator"/>
+                <VBox spacing="10">
+                    <Button text="➕ Enroll New Member" styleClass="action-button" maxWidth="Infinity" onAction="#quickAddMember"/>
+                    <Button text="🔍 Find Member" styleClass="secondary-button" maxWidth="Infinity" onAction="#quickFindMember"/>
+                    <Button text="📊 View Analytics" styleClass="secondary-button" maxWidth="Infinity" onAction="#quickViewAnalytics"/>
+                    <Button text="✏️ Update Subscription" styleClass="secondary-button" maxWidth="Infinity" onAction="#quickUpdateSub"/>
+                </VBox>
+            </VBox>
+
+            <VBox styleClass="content-card-dark" spacing="15" HBox.hgrow="ALWAYS" prefWidth="450">
+                <Label text="🎯 System Overview" styleClass="page-header-white"/>
+                <Separator styleClass="modern-separator" opacity="0.3"/>
+                <VBox spacing="15">
+                    <HBox styleClass="dashboard-widget" alignment="CENTER_LEFT" spacing="15">
+                        <Label text="⚠️" style="-fx-font-size: 28px;"/>
+                        <VBox spacing="3">
+                            <Label text="Expired Subscriptions" styleClass="widget-title"/>
+                            <Label fx:id="expiredCountLabel" text="0 members" styleClass="widget-value"/>
+                        </VBox>
+                    </HBox>
+                    <HBox styleClass="dashboard-widget" alignment="CENTER_LEFT" spacing="15">
+                        <Label text="🔥" style="-fx-font-size: 28px;"/>
+                        <VBox spacing="3">
+                            <Label text="Top Discipline" styleClass="widget-title"/>
+                            <Label fx:id="topDisciplineLabel" text="Loading..." styleClass="widget-value"/>
+                        </VBox>
+                    </HBox>
+                    <HBox styleClass="dashboard-widget" alignment="CENTER_LEFT" spacing="15">
+                        <Label text="🏆" style="-fx-font-size: 28px;"/>
+                        <VBox spacing="3">
+                            <Label text="Best Trainer" styleClass="widget-title"/>
+                            <Label fx:id="bestTrainerLabel" text="Loading..." styleClass="widget-value"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </VBox>
+        </HBox>
+    </VBox>
+</ScrollPane>
