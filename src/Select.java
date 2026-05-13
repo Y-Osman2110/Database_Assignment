@@ -101,9 +101,14 @@ public class Select {
 
     public void getTrainerSchedule(Connection connection) {
         String sql = "SELECT t.trainerFName, t.trainerLName, t.trainerSpecialtiy, s.sessionName, s.discipline, s.sessionCapacity, s.startTime, s.endTime, z.location AS zoneLocation, "
-                + "COUNT(r.reservationId) AS bookedCapacity FROM Trainer t INNER JOIN Session s ON t.trainerId = s.trainerId INNER JOIN Zone z ON s.zoneNum = z.zoneNum"
-                + " LEFT JOIN Reservation r ON s.sessionId = r.sessionId WHERE s.startTime > GETDATE() GROUP BY  t.trainerFName, t.trainerLName, t.trainerSpecialtiy, "
-                + "s.sessionName, s.discipline, s.sessionCapacity, s.startTime, s.endTime, z.location ORDER BY s.startTime;";
+           + "COUNT(r.reservationId) AS bookedCapacity "
+           + "FROM Trainer t "
+           + "INNER JOIN Session s ON t.trainerId = s.trainerId "
+           + "INNER JOIN Zone z ON s.zoneNum = z.zoneNum "   // <-- added space
+           + "LEFT JOIN Reservation r ON s.sessionId = r.sessionId "
+           + "WHERE s.startTime > GETDATE() "
+           + "GROUP BY t.trainerFName, t.trainerLName, t.trainerSpeciality, s.sessionName, s.discipline, s.sessionCapacity, s.startTime, s.endTime, z.location "
+           + "ORDER BY s.startTime;";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
             ResultSet rs = statement.executeQuery();
