@@ -9,16 +9,25 @@ import java.sql.SQLException;
 // ══════════════════════════════════════════════
 
 public class Delete {
-    public  void deleteReservation(Connection conn, int reservationId) {
-        String sql = "DELETE FROM Reservation WHERE reservationId = ?";
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, reservationId);
-            int rows = stmt.executeUpdate();
-            if (rows > 0) {
+    public void deleteReservation(Connection conn, int reservationId) {
+        try {
+            // الأول افصل الـ session عن الـ reservation
+            String updateSession = "UPDATE Session SET reservationId = NULL WHERE reservationId = ?";
+            PreparedStatement s1 = conn.prepareStatement(updateSession);
+            s1.setInt(1, reservationId);
+            s1.executeUpdate();
+
+            // بعدين امسح الـ reservation
+            String deleteRes = "DELETE FROM Reservation WHERE reservationID = ?";
+            PreparedStatement s2 = conn.prepareStatement(deleteRes);
+            s2.setInt(1, reservationId);
+            int rows = s2.executeUpdate();
+
+            if (rows > 0)
                 System.out.println("Reservation #" + reservationId + " deleted successfully.");
-            } else {
+            else
                 System.out.println("No reservation found with ID " + reservationId + ".");
-            }
+
         } catch (SQLException e) {
             System.out.println("Error deleting reservation: " + e.getMessage());
         }
