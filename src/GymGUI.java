@@ -38,7 +38,6 @@ public class GymGUI extends Application {
         outputArea = createConsoleArea();
 
         tabPane = createMainTabs();
-
         BorderPane root = new BorderPane();
         root.getStyleClass().add("app-root");
         root.setTop(createHeader());
@@ -129,11 +128,9 @@ public class GymGUI extends Application {
         tipsTitle.getStyleClass().add("sidebar-title");
         Label tip1 = new Label("Inputs clear after successful actions.");
         Label tip2 = new Label("Console output stays docked at the bottom.");
-        Label tip3 = new Label("No database logic was changed.");
         tip1.getStyleClass().add("sidebar-text");
         tip2.getStyleClass().add("sidebar-text");
-        tip3.getStyleClass().add("sidebar-text");
-        tips.getChildren().addAll(tipsTitle, tip1, tip2, tip3);
+        tips.getChildren().addAll(tipsTitle, tip1, tip2);
 
         sidebar.getChildren().addAll(intro, nav, tips);
         return sidebar;
@@ -199,7 +196,7 @@ public class GymGUI extends Application {
         TextArea area = new TextArea();
         area.setEditable(false);
         area.setWrapText(false);
-        area.setPrefRowCount(8);
+        area.setPrefRowCount(16);
         area.getStyleClass().add("console-area");
         return area;
     }
