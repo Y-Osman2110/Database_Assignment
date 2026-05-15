@@ -2,6 +2,7 @@ package src;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Insert {
@@ -13,7 +14,7 @@ public class Insert {
             String address) {
         String sql = "INSERT INTO Member VALUES (?, ?, ?, ?, ?)";
 
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, fName);
             statement.setString(2, lName);
             statement.setString(3, phone);
@@ -21,7 +22,14 @@ public class Insert {
             statement.setString(5, address);
 
             statement.executeUpdate();
-            System.out.println("Inserted member to database~ ");
+            try(ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                if(generatedKeys.next()) {
+                    int id = generatedKeys.getInt(1);
+                    System.out.println("Inserted member to database~ ");
+                    System.out.println("Id: " + id + " Name: " + fName + " " + lName + ", phone: " + phone + ", email: " + email
+                            + ", address: " + address);
+                }
+            }
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
