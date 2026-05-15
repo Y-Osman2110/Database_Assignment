@@ -2,10 +2,10 @@ package src;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Select {
     // ============single table selects
@@ -69,7 +69,7 @@ public class Select {
     // ==================multiple tables (joins)
 
     public void findMembersWithExpiredSubscriptions(Connection connection) {
-        String sql = "SELECT m.Fname, m.Lname, m.memberPhone, m.memberEmail, m.memberAddress  FROM Member m Inner Join Subscription s ON "
+        String sql = "SELECT m.memberFname, m.memberLname, m.memberPhone, m.memberEmail, m.memberAddress  FROM Member m Inner Join Subscription s ON "
                 + "m.memberId = s.memberId WHERE s.EndDate < GETDATE();";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -104,7 +104,7 @@ public class Select {
            + "COUNT(r.reservationId) AS bookedCapacity "
            + "FROM Trainer t "
            + "INNER JOIN Session s ON t.trainerId = s.trainerId "
-           + "INNER JOIN Zone z ON s.zoneNum = z.zoneNum "   // <-- added space
+           + "INNER JOIN Zone z ON s.zoneNum = z.zoneNum "
            + "LEFT JOIN Reservation r ON s.sessionId = r.sessionId "
            + "WHERE s.startTime > GETDATE() "
            + "GROUP BY t.trainerFName, t.trainerLName, t.trainerSpeciality, s.sessionName, s.discipline, s.sessionCapacity, s.startTime, s.endTime, z.location "
