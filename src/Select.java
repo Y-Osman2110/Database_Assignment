@@ -171,7 +171,7 @@ public class Select {
 
     public void query1(Connection connection) {
         String sql = "SELECT TOP 1 s.discipline, COUNT(r.reservationId) AS Total " +
-                "FROM Session s JOIN Reservation r ON s.reservationId = r.reservationId " +
+                "FROM Session s JOIN Reservation r ON s.sessionId = r.sessionId " +
                 "GROUP BY s.discipline ORDER BY Total DESC;";
         executeAndPrint(connection, sql);
     }
@@ -179,20 +179,20 @@ public class Select {
     public void query2(Connection connection) {
         String sql = "SELECT s.sessionId, s.discipline, s.startTime FROM Session s " +
                 "WHERE s.startTime >= DATEADD(MONTH, -1, GETDATE()) " +
-                "AND s.sessionId NOT IN (SELECT DISTINCT sessionId FROM Session WHERE reservationId IS NOT NULL);";
+                "AND s.sessionId NOT IN (SELECT DISTINCT sessionId FROM Reservation WHERE sessionId IS NOT NULL);";
         executeAndPrint(connection, sql);
     }
 
     public void query3(Connection connection) {
-        String sql = "SELECT TOP 1 t.trainerFname, t.trainerLname, COUNT(c.checkinId) AS Total " +
-                "FROM Trainer t JOIN [Check-in] c ON t.memberId = c.memberId " +
-                "WHERE c.timestamp >= DATEADD(MONTH, -1, GETDATE()) " +
-                "GROUP BY t.trainerFname, t.trainerLname ORDER BY Total DESC;";
+        String sql = "SELECT TOP 1 t.trainerFname, t.trainerLname, COUNT(DISTINCT r.memberId) AS Total " +
+                "FROM Trainer t JOIN Session s ON t.trainerId = s.trainerId " +
+                "JOIN Reservation r ON s.sessionId = r.sessionId " +
+                "GROUP BY t.trainerId, t.trainerFname, t.trainerLname ORDER BY Total DESC;";
         executeAndPrint(connection, sql);
     }
 
     public void query4(Connection connection) {
-        String sql = "SELECT m.Fname, m.Lname, m.memberEmail FROM Member m " +
+        String sql = "SELECT m.memberFname, m.memberLname, m.memberEmail FROM Member m " +
                 "JOIN Subscription s ON m.memberId = s.memberId " +
                 "WHERE s.status = 'Active' AND m.memberId NOT IN " +
                 "(SELECT memberId FROM [Check-in] WHERE timestamp >= DATEADD(MONTH, -1, GETDATE()));";
@@ -200,16 +200,16 @@ public class Select {
     }
 
     public void query5(Connection connection) {
-        String sql = "SELECT z.zoneNum, s.discipline, s.startTime FROM Zone z " +
-                "JOIN Session s ON z.sessionId = s.sessionId " +
+        String sql = "SELECT z.zoneNum, s.discipline, s.startTime , s.endTime FROM Zone z " +
+                "JOIN Session s ON z.zoneNum = s.zoneNum " +
                 "WHERE z.timestamp >= DATEADD(MONTH, -1, GETDATE()) ORDER BY z.zoneNum;";
         executeAndPrint(connection, sql);
     }
 
     public void query6(Connection connection) {
-        String sql = "SELECT m.Fname + ' ' + m.Lname AS FullName, COUNT(r.reservationId) AS Total " +
+        String sql = "SELECT m.memberFname + ' ' + m.memberLname AS FullName, COUNT(r.reservationId) AS Total " +
                 "FROM Member m LEFT JOIN Reservation r ON m.memberId = r.memberId " +
-                "GROUP BY m.memberId, m.Fname, m.Lname ORDER BY Total DESC;";
+                "GROUP BY m.memberId, m.memberFname, m.memberLname ORDER BY Total DESC;";
         executeAndPrint(connection, sql);
     }
 
