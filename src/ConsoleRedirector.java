@@ -21,7 +21,6 @@ public class ConsoleRedirector {
         };
         PrintStream customOut = new PrintStream(out);
         System.setOut(customOut);
-        // Also redirect System.err to show error messages
         System.setErr(customOut);
     }
 }

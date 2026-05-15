@@ -11,13 +11,11 @@ import java.sql.SQLException;
 public class Delete {
     public void deleteReservation(Connection conn, int reservationId) {
         try {
-            // الأول افصل الـ session عن الـ reservation
             String updateSession = "UPDATE Session SET reservationId = NULL WHERE reservationId = ?";
             PreparedStatement s1 = conn.prepareStatement(updateSession);
             s1.setInt(1, reservationId);
             s1.executeUpdate();
 
-            // بعدين امسح الـ reservation
             String deleteRes = "DELETE FROM Reservation WHERE reservationID = ?";
             PreparedStatement s2 = conn.prepareStatement(deleteRes);
             s2.setInt(1, reservationId);

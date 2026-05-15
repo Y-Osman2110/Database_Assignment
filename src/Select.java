@@ -9,7 +9,6 @@ import java.sql.Statement;
 import java.time.format.DateTimeFormatter;
 
 public class Select {
-    // ============single table selects
     public void findMemberByPhone(Connection connection, String phone) {
         String sql = "SELECT * FROM Member WHERE memberPhone = ?";
 
@@ -65,8 +64,6 @@ public class Select {
             System.out.println(e.getMessage());
         }
     }
-    // ==============================
-    // ==================multiple tables (joins)
 
     public void findMembersWithExpiredSubscriptions(Connection connection) {
         String sql = "SELECT m.memberFname, m.memberLname, m.memberPhone, m.memberEmail, m.memberAddress FROM Member m Inner Join Subscription s ON "
