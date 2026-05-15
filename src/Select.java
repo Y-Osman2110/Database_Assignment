@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.format.DateTimeFormatter;
 
 public class Select {
     // ============single table selects
@@ -24,8 +25,8 @@ public class Select {
                 String email = rs.getString(5);
                 String address = rs.getString(6);
 
-                System.err.println("Id: " + id + ", Name: " + fname + " " + lname + ", email: "
-                        + email + ", address: " + address);
+                System.err.println("Id: " + id + ", Name: " + fname + " " + lname + ", phone: "
+                        + phone + ", email: " + email + ", address: " + address);
             } else
                 System.out.println("Couldn't find member with phone number: " + phone);
         } catch (SQLException e) {
@@ -51,12 +52,11 @@ public class Select {
                 int id = rs.getInt(1);
                 String fname = rs.getString(2);
                 String lname = rs.getString(3);
-                String duration = rs.getString(4);
-                String desc = rs.getString(5);
-                int member = rs.getInt(6);
+                String duration = rs.getString(5);
+                String desc = rs.getString(6);
 
                 System.out.println("Id: " + id + ", Name: " + fname + " " + lname + ", duration: "
-                        + duration + ", description: " + desc + ", member's id (that they coach): " + member);
+                        + duration + ", description: " + desc);
             }
 
             if (!found)
@@ -69,7 +69,7 @@ public class Select {
     // ==================multiple tables (joins)
 
     public void findMembersWithExpiredSubscriptions(Connection connection) {
-        String sql = "SELECT m.memberFname, m.memberLname, m.memberPhone, m.memberEmail, m.memberAddress  FROM Member m Inner Join Subscription s ON "
+        String sql = "SELECT m.memberFname, m.memberLname, m.memberPhone, m.memberEmail, m.memberAddress FROM Member m Inner Join Subscription s ON "
                 + "m.memberId = s.memberId WHERE s.EndDate < GETDATE();";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -107,13 +107,13 @@ public class Select {
            + "INNER JOIN Zone z ON s.zoneNum = z.zoneNum "
            + "LEFT JOIN Reservation r ON s.sessionId = r.sessionId "
            + "WHERE s.startTime > GETDATE() "
-           + "GROUP BY t.trainerFName, t.trainerLName, t.trainerSpeciality, s.sessionName, s.discipline, s.sessionCapacity, s.startTime, s.endTime, z.location "
+           + "GROUP BY t.trainerFName, t.trainerLName, t.trainerSpecialtiy, s.sessionName, s.discipline, s.sessionCapacity, s.startTime, s.endTime, z.location "
            + "ORDER BY s.startTime;";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(sql);
+                ResultSet rs = statement.executeQuery()) {
 
-            ResultSet rs = statement.executeQuery();
             boolean found = false;
-
+            
             while (rs.next()) {
                 if (!found) {
                     System.out.println("Trainers' schedules: ");
@@ -126,14 +126,17 @@ public class Select {
                 String sessionName = rs.getString(4);
                 String discipline = rs.getString(5);
                 int capacity = rs.getInt(6);
-                java.sql.Time startTime = rs.getTime(7);
-                java.sql.Time endTime = rs.getTime(8);
+                java.sql.Timestamp startTime = rs.getTimestamp(7);
+                java.sql.Timestamp endTime = rs.getTimestamp(8);
                 String zoneLoc = rs.getString(9);
                 int booked = rs.getInt(10);
 
                 System.out.println("Trainer: " + fname + " " + lname + " (" + specialty + ")");
                 System.out.println("  Session: " + sessionName + " | " + discipline);
-                System.out.println("  Time: " + startTime + " - " + endTime);
+
+                DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+                System.out.println("  Time: " + startTime.toLocalDateTime().format(fmt) + " - " + endTime.toLocalDateTime().format(fmt));
                 System.out.println("  Location: " + zoneLoc);
                 System.out.println("  Capacity: " + booked + "/" + capacity + " booked");
                 System.out.println();
